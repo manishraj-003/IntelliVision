@@ -2,6 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
+# System dependencies for OCR, PDFs, OpenCV
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     poppler-utils \
@@ -10,14 +11,14 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements FIRST (better caching)
-COPY processor/requirements.txt .
+# Install Python dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the processor app code
-COPY processor/app ./app
+# Copy application code
+COPY app/ ./app/
 
 EXPOSE 8001
 
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8001} --workers 1"]
-
+# Start FastAPI server
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]

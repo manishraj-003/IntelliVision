@@ -1,29 +1,33 @@
+# Extra index for CPU-only PyTorch wheels
 --extra-index-url https://download.pytorch.org/whl/cpu
 
 # Core API
 fastapi
 uvicorn[standard]
-#python-multipart
+python-multipart
 
-# NumPy
+# Numerical
 numpy<2
 
 # Image & OCR
 pillow
-#opencv-python-headless
-#pytesseract
-#pdf2image
+opencv-python-headless
+pytesseract
+pdf2image
 
 # ML / Vision
-#torch==2.2.2+cpu
-#torchvision==0.17.2+cpu
-#torchaudio==2.2.2+cpu
-#ultralytics
+torch==2.2.2+cpu
+torchvision==0.17.2+cpu
+torchaudio==2.2.2+cpu
+ultralytics
+
+# NLP / Summarization
 transformers
 
 # Google Vision
 google-cloud-vision
 google-api-core
 google-auth
+
+# Compatibility
 protobuf<5
-#python-multipart
