@@ -2,18 +2,14 @@ import os
 from google.cloud import vision
 import numpy as np
 import cv2
-from ultralytics import YOLO
-import torch
 
 class ObjectDetector:
     def __init__(self):
         self.client = None
         self.yolo = None
 
-        # 🔴 Feature flag
+        # Feature flag
         self.enable_yolo = os.getenv("ENABLE_YOLO", "false").lower() == "true"
-
-        torch.set_num_threads(1)
 
     # -------- Google Vision --------
     def get_client(self):
@@ -26,19 +22,24 @@ class ObjectDetector:
         image = vision.Image(content=image_bytes)
 
         response = client.object_localization(image=image)
-
         return list({
             obj.name.lower()
             for obj in response.localized_object_annotations
         })
 
-    # -------- YOLO (disabled on free tier) --------
+    # -------- YOLO (IMPORT ONLY IF ENABLED) --------
     def get_yolo(self):
         if not self.enable_yolo:
-            raise RuntimeError("YOLO disabled on free tier")
+            raise RuntimeError("YOLO disabled")
 
         if self.yolo is None:
+            # 🔴 IMPORTS HERE — NOT AT TOP
+            import torch
+            from ultralytics import YOLO
+
+            torch.set_num_threads(1)
             self.yolo = YOLO("/app/app/yolov8n.pt")
+
         return self.yolo
 
     def detect_with_yolo(self, image_bytes):
@@ -62,8 +63,5 @@ class ObjectDetector:
             return self.detect_with_google(image_bytes)
         except Exception as e:
             if self.enable_yolo:
-                print("Google failed, using YOLO:", e)
                 return self.detect_with_yolo(image_bytes)
-            else:
-                print("YOLO disabled, Google failed:", e)
-                return []
+            return []
