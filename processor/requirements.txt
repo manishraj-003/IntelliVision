@@ -19,7 +19,7 @@ pillow
 #torchvision==0.17.2+cpu
 #torchaudio==2.2.2+cpu
 #ultralytics
-#transformers
+transformers
 
 # Google Vision
 google-cloud-vision
