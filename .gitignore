@@ -1,19 +1,23 @@
-# python
-venv/
-processor/venv/
+# Node
+node_modules/
+npm-debug.log*
+yarn.lock
+
+# Python
 __pycache__/
 *.pyc
+venv/
+
+# Env
 .env
+.env.*
 
-# node
-node_modules/
-
-# secrets
-vision_key.json
-
-# docker
-*.log
+# Build
+dist/
+build/
 
 # OS
-Thumbs.db
 .DS_Store
+Thumbs.db
+# Secrets
+processor/vision_key.json
