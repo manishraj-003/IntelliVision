@@ -3,16 +3,16 @@
 # Core API
 fastapi
 uvicorn[standard]
-python-multipart
+#python-multipart
 
 # NumPy
 numpy<2
 
 # Image & OCR
 pillow
-opencv-python-headless
-pytesseract
-pdf2image
+#opencv-python-headless
+#pytesseract
+#pdf2image
 
 # ML / Vision
 #torch==2.2.2+cpu
@@ -26,4 +26,4 @@ google-cloud-vision
 google-api-core
 google-auth
 protobuf<5
-python-multipart
+#python-multipart
