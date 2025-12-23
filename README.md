@@ -41,6 +41,7 @@ This project demonstrates **real-world backend engineering, AI pipeline design, 
 
 ## 🏗️ Architecture
 
+```text
 Frontend (React + Vercel)
 │
 ▼
