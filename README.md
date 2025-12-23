@@ -94,6 +94,7 @@ PostgreSQL (Results & History)
 
 ## 📂 Project Structure
 
+```text
 IntelliVision/
 │
 ├── frontend/
