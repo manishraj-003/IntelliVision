@@ -15,11 +15,11 @@ pytesseract
 pdf2image
 
 # ML / Vision
-torch==2.2.2+cpu
-torchvision==0.17.2+cpu
-torchaudio==2.2.2+cpu
-ultralytics
-transformers
+#torch==2.2.2+cpu
+#torchvision==0.17.2+cpu
+#torchaudio==2.2.2+cpu
+#ultralytics
+#transformers
 
 # Google Vision
 google-cloud-vision
