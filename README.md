@@ -57,7 +57,7 @@ AI Processor (FastAPI)
 │
 ▼
 PostgreSQL (Results & History)
-
+```
 
 ### Explaining Architecture
 - **Microservices** → independent scaling  
@@ -127,7 +127,7 @@ IntelliVision/
 ├── docker-compose.yml
 ├── .gitignore
 └── README.md
-
+```
 
 ---
 
