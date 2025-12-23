@@ -1,3 +1,4 @@
+import os
 from google.cloud import vision
 import numpy as np
 import cv2
@@ -6,16 +7,15 @@ import torch
 
 class ObjectDetector:
     def __init__(self):
-        # Lazy Google Vision client
         self.client = None
-
-        # Lazy YOLO model
         self.yolo = None
 
-        # Reduce Torch memory usage
+        # 🔴 Feature flag
+        self.enable_yolo = os.getenv("ENABLE_YOLO", "false").lower() == "true"
+
         torch.set_num_threads(1)
 
-    # ---------- Google Vision ----------
+    # -------- Google Vision --------
     def get_client(self):
         if self.client is None:
             self.client = vision.ImageAnnotatorClient()
@@ -27,16 +27,17 @@ class ObjectDetector:
 
         response = client.object_localization(image=image)
 
-        objects = []
-        for obj in response.localized_object_annotations:
-            objects.append(obj.name.lower())
+        return list({
+            obj.name.lower()
+            for obj in response.localized_object_annotations
+        })
 
-        return list(set(objects))
-
-    # ---------- YOLO (Lazy load) ----------
+    # -------- YOLO (disabled on free tier) --------
     def get_yolo(self):
+        if not self.enable_yolo:
+            raise RuntimeError("YOLO disabled on free tier")
+
         if self.yolo is None:
-            # IMPORTANT: lazy load model here
             self.yolo = YOLO("/app/app/yolov8n.pt")
         return self.yolo
 
@@ -51,15 +52,18 @@ class ObjectDetector:
         for result in results:
             for box in result.boxes:
                 cls = int(box.cls[0])
-                label = result.names[cls]
-                objects.append(label.lower())
+                objects.append(result.names[cls].lower())
 
         return list(set(objects))
 
-    # ---------- Unified detect ----------
+    # -------- Unified API --------
     def detect(self, image_bytes):
         try:
             return self.detect_with_google(image_bytes)
         except Exception as e:
-            print("Google Vision failed, falling back to YOLO:", e)
-            return self.detect_with_yolo(image_bytes)
+            if self.enable_yolo:
+                print("Google failed, using YOLO:", e)
+                return self.detect_with_yolo(image_bytes)
+            else:
+                print("YOLO disabled, Google failed:", e)
+                return []
