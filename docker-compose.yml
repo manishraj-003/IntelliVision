@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7
+    container_name: intellivision-redis
+    ports:
+      - "6379:6379"
+
+  processor:
+    build: ./processor
+    container_name: intellivision-processor
+    ports:
+      - "8001:8001"
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/vision_key.json
+    volumes:
+      - ./processor/app:/app/app
+    depends_on:
+      - redis
+
+  gateway:
+    build: ./gateway
+    container_name: intellivision-gateway
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./gateway/.env
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - PROCESSOR_URL=http://processor:8001
+    depends_on:
+      - redis
+      - processor
+
+  worker:
+    build: ./worker
+    container_name: intellivision-worker
+    env_file:
+      - ./worker/.env
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - PROCESSOR_URL=http://processor:8001
+    depends_on:
+      - redis
+      - processor

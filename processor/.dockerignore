@@ -1,0 +1,36 @@
+__pycache__/
+*.pyc
+*.pyo
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.pdf
+env/
+venv/
+cache/
+*.db
+*.sqlite
+.DS_Store
+
+# Ignore PyTorch model files
+*.pt
+
+# Ignore node_modules to prevent accidental copy
+node_modules/
+
+# Ignore uploads or compiled media
+uploads/
+files/
+media/
+
+# Ignore Git folder
+.git/
+
+# Ignore local virtual environments
+.venv/
+.env/
+
+# Ignore docker files inside context
+Dockerfile
+docker-compose.yml

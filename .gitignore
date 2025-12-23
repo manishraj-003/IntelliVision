@@ -1,0 +1,19 @@
+# python
+venv/
+processor/venv/
+__pycache__/
+*.pyc
+.env
+
+# node
+node_modules/
+
+# secrets
+vision_key.json
+
+# docker
+*.log
+
+# OS
+Thumbs.db
+.DS_Store

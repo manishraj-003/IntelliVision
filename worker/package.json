@@ -1,0 +1,9 @@
+{
+  "name": "intellivision-worker",
+  "type": "module",
+  "dependencies": {
+    "bullmq": "^5.66.2",
+    "ioredis": "^5.8.2",
+    "axios": "^1.7.0"
+  }
+}
