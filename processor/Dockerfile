@@ -10,13 +10,13 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+# Copy requirements FIRST (better caching)
+COPY processor/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# copy the app folder
-COPY app/ ./app
+# Copy the processor app code
+COPY processor/app ./app
 
 EXPOSE 8001
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--workers", "1"]
-
